@@ -1,34 +1,38 @@
 // The redis entrypoint - you can include other files as required
 var redis = require('redis');
-var client = redis.createClient();
 var bluebird = require('bluebird');
-
-// if you'd like to select database 3, instead of 0 (default), call
-// client.select(3, function() { /* ... */ });
-client.on("error", function (err) {
-    console.log("Error " + err);
-});
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
-client.hset("hash key", "hashtest 1", "some value", redis.print);
-client.set("string key", "string val", redis.print);
-client.hset(["hash key", "hashtest 2", "some other value"], redis.print);
-client.hkeys("hash key", function (err, replies) {
-    console.log(replies.length + " replies:");
-    replies.forEach(function (reply, i) {
-        console.log("    " + i + ": " + reply);
-    });
-    client.quit();
-});
-
 /**
 This has the hashing function, the sort funcs and the key names
 */
-var RedisUtil = {
+const RedisUtil = {
+  getClient: () => {
+    var client = redis.createClient();
+    return client;
+  },
   // Map of table names to their key prefix
   tableNames: {
     "users": "info:users:"
+  },
+  createUser: (client, username, password, details) => {
+    console.log(this.tableNames.users);
+    var key = this.tableNames.users + username;
+    // Check if key exists
+    if (this.hasKey(key)) {
+      return Promise(false);
+    } else {
+      return client.hsetAsync(key, "password", password, "details", details);
+    }
+  },
+  saveRandom: (client, str) => {
+    return client.lpushAsync("somelist", str);
+  },
+  getAllRandom: (client) => {
+    return client.lrangeAsync("somelist", 0, -1);
   }
 };
+
+module.exports = RedisUtil;

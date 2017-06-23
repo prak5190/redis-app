@@ -1,23 +1,53 @@
-var redis = require('redis');
-var client = redis.createClient();
-var bluebird = require('bluebird');
+const express = require('express')
+const app = express()
 
-// if you'd like to select database 3, instead of 0 (default), call
-// client.select(3, function() { /* ... */ });
-client.on("error", function (err) {
-    console.log("Error " + err);
-});
+// include modules
+const socketio = require('socket.io');
+const cors = require('cors');
+const compression = require('compression');
+const cluster = require('cluster');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const ejs = require('ejs');
+const multer = require('multer');
+// create app, server, sockets
+const methodOverride = require('method-override');
+const errorhandler = require('errorhandler');
 
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
+app.use(express.static(__dirname + '/public'));
+app.use(favicon(__dirname + '/public/public/favicon.ico'));
+app.use(cookieParser("iei122ei12!@&#*(!@#ansdajsdnajs213"));
 
-client.hset("hash key", "hashtest 1", "some value", redis.print);
-client.set("string key", "string val", redis.print);
-client.hset(["hash key", "hashtest 2", "some other value"], redis.print);
-client.hkeys("hash key", function (err, replies) {
-    console.log(replies.length + " replies:");
-    replies.forEach(function (reply, i) {
-        console.log("    " + i + ": " + reply);
-    });
-    client.quit();
-});
+app.set('views', './views')
+app.set('view engine', 'ejs');
+app.engine('html', ejs.renderFile);
+app.use(logger('dev'));
+
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride());
+app.use(compression());
+var upload = multer({ dest: './uploads' });
+
+// configure enviroments
+if ('development' == app.get('env')) {
+  app.use(errorhandler({ dumpExceptions: true, showStack: true }));
+} else if ('production' == app.get('env')) {
+  app.use(errorhandler());
+};
+
+//Enable CORS on all routes
+app.use(cors());
+// restful api routes
+require('./app/routes')(app);
+// include modules
+app.get('/', function (req, res) {
+  res.send('Hello World!')
+})
+
+app.listen(3001, function () {
+  console.log('Example app listening on port 3001!')
+})

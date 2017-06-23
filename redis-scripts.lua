@@ -1,4 +1,4 @@
-			-- redis-cli  --eval redis-scripts.lua
+-- redis-cli  --eval redis-scripts.lua
 -- Some redis commands in lua
 
 local log = function(s)
