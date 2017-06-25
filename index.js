@@ -18,6 +18,7 @@ const methodOverride = require('method-override');
 const errorhandler = require('errorhandler');
 
 app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public/build'));
 app.use(favicon(__dirname + '/public/public/favicon.ico'));
 app.use(cookieParser("iei122ei12!@&#*(!@#ansdajsdnajs213"));
 
@@ -45,7 +46,7 @@ app.use(cors());
 require('./app/routes')(app);
 // include modules
 app.get('/', function (req, res) {
-  res.send('Hello World!')
+  res.sendFile(__dirname + "/public/build/index.html");
 })
 
 app.listen(3001, function () {
