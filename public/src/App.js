@@ -5,16 +5,60 @@ import './css/bootstrap.min.css';
 import './css/bootstrap-theme.min.css';
 import { Button, FormGroup, HelpBlock, ControlLabel, FormControl } from 'react-bootstrap';
 import request from "superagent";
+import jsonp from 'tiny-jsonp';
 
+console.log("**** ", process.env);
+const gApiKey = process.env.REACT_APP_GOOGLE_API_KEY;
 class App extends Component {
-
   constructor(props) {
     super(props);
     this.state = {value: ''};
+    this.getGoogleMaps();
   }
 
   handleChange(event) {
     this.setState({value: event.target.value});
+  }
+
+  getGoogleMaps() {
+    jsonp("https://maps.googleapis.com/maps/api/js")
+      .query({
+	key : gApiKey
+      })
+      .end(function() {
+	var uluru = {lat: -25.363, lng: 131.044};
+        var map = new window.google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });
+        var marker = new window.google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+	var ox = uluru.lat, oy = uluru.lng;
+	var r = 3;
+	var x = ox;
+	var mox = ox + 2*r;
+	var delta = r/100;
+	setInterval(function() {
+	  // Range ox to ox + r , calculate y
+	  x = x + delta;
+	  if (x >= mox) {
+	    x = mox;
+	    delta = delta * -1;
+	  } else if (x <= ox) {
+	    x = ox;
+	    delta = delta * -1;
+	  }
+	  // Calculate y
+	  var y = Math.sqrt(r * r - (x - (ox + r)) * (x - (ox+r)));
+	  if (delta < 0)
+	    y = oy - y;
+	  else
+	    y = oy + y;
+	  marker.setPosition({ lat: x, lng: y});
+	}, 10);
+      });
   }
 
   render() {

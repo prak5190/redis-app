@@ -2,11 +2,14 @@
   "name": "public",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
+    "dotenv": "^4.0.0",
     "react": "^15.6.1",
-    "react-bootstrap": "^0.31.0",
+    "react-bootstrap": "^0.31.1",
     "react-dom": "^15.6.1",
     "superagent": "^3.5.2",
+    "tiny-jsonp": "^1.0.4",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
@@ -17,6 +20,5 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  },
-  "proxy": "http://localhost:3001"
+  }
 }
