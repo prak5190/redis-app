@@ -6,14 +6,34 @@ import './css/bootstrap-theme.min.css';
 import { Button, FormGroup, HelpBlock, ControlLabel, FormControl } from 'react-bootstrap';
 import request from "superagent";
 import jsonp from 'tiny-jsonp';
+import { BrowserRouter as Router, Route, Switch } from 'react-router';
 
-console.log("**** ", process.env);
 const gApiKey = process.env.REACT_APP_GOOGLE_API_KEY;
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {value: ''};
     this.getGoogleMaps();
+    this.onLocation();
+  }
+
+  onLocation() {
+    var options = {
+      enableHighAccuracy: true,
+      timeout: 100000,
+      maximumAge: 0
+    };
+
+    window.navigator.geolocation.watchPosition(function() {
+      console.log("(*()((");
+      console.log(arguments);
+    }, function(){
+      console.log("err" , arguments);
+    }, options);
+    window.navigator.geolocation.getCurrentPosition(function() {
+      console.log("(*()((");
+      console.log(arguments);
+    })
   }
 
   handleChange(event) {

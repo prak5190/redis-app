@@ -1,6 +1,7 @@
 var querystring = require('querystring')
 , ejs = require('ejs')
 , redis = require('./redis');
+const geoip = require('node-freegeoip');
 
 module.exports = function(app) {
   var client = redis.getClient();
@@ -19,6 +20,11 @@ module.exports = function(app) {
       console.log(arguments);
       res.json(r);
     })
+  });
+
+  app.get("/location", function(req, res) {
+    const ip = req.ip;
+    const geo = geoip.lookup(ip);
   });
 };
 

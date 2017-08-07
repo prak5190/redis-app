@@ -8,6 +8,7 @@
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.1",
     "react-dom": "^15.6.1",
+    "react-router-dom": "^4.1.2",
     "superagent": "^3.5.2",
     "tiny-jsonp": "^1.0.4",
     "whatwg-fetch": "^2.0.3"
