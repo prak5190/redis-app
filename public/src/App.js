@@ -17,6 +17,10 @@ class App extends Component {
     this.onLocation();
   }
 
+  componentDidMount() {
+    this.getAll(this);
+  }
+
   onLocation() {
     var options = {
       enableHighAccuracy: true,
@@ -82,6 +86,7 @@ class App extends Component {
   }
 
   render() {
+    const k = (this.state.t || []).map((x) => <span>{x} , </span>);
     return (
       <div className="App">
 	<h1> Signup Form </h1>
@@ -93,6 +98,9 @@ class App extends Component {
 	    <Button type='submit'>Save</Button>
 	  </FormGroup>
 	</form>
+	<div>
+	  {k}
+	</div>
       </div>
     );
   }
@@ -110,8 +118,13 @@ class App extends Component {
     e.preventDefault();
   }
 
-  getAll() {
-    request.get('/getall')
+  getAll(self) {
+    request.get('/getall').then(function(r) {
+      console.log(r);
+      self.setState({
+	t: JSON.parse(r.text)
+      });
+    })
   }
 }
 
