@@ -19,7 +19,15 @@ module.exports = function(app) {
 
   app.get("/getall", function(req, res, next) {
     redis.getAllRandom(client).then(function(r) {
-      console.log(arguments);
+      res.json(r);
+      next();
+    })
+  });
+
+  app.get("/remove", function(req, res, next) {
+    var val = req.query.val;
+    console.log(val);
+    redis.delRandom(client, val).then(function(r) {
       res.json(r);
       next();
     })

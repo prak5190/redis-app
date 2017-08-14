@@ -32,6 +32,9 @@ const RedisUtil = {
   },
   getAllRandom: (client) => {
     return client.lrangeAsync("somelist", 0, -1);
+  },
+  delRandom: (client, val) => {
+    return client.lremAsync("somelist", 1, val);
   }
 };
 
