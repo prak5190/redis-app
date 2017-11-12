@@ -31,6 +31,7 @@ app.use(methodOverride());
 app.use(compression());
 var upload = multer({ dest: './uploads' });
 
+var port = 8080;
 // Get file paths from react build
 // configure enviroments
 if ('development' == app.get('env')) {
@@ -59,6 +60,6 @@ app.get('/', function (req, res) {
   res.render('index', { js, css });
 })
 
-app.listen(8080, function () {
-  console.log('Example app listening on port 80!')
+app.listen(port, function () {
+  console.log('Example app listening on port '+ port)
 })
