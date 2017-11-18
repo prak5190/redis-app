@@ -7,8 +7,14 @@ import { Button, FormGroup, HelpBlock, ControlLabel, FormControl } from 'react-b
 import request from "superagent";
 import jsonp from 'tiny-jsonp';
 import { BrowserRouter as Router, Route, Switch } from 'react-router';
+import ReactDOM from 'react-dom';
+import FacebookLogin from 'react-facebook-login';
 
 const gApiKey = process.env.REACT_APP_GOOGLE_API_KEY;
+const responseFacebook = (response) => {
+  console.log(response);
+  alert("");
+}
 class App extends Component {
   constructor(props) {
     super(props);
@@ -87,9 +93,16 @@ class App extends Component {
 
   render() {
     const k = (this.state.t || []).map((x) => <span>{x} , </span>);
+    const componentClicked = (x) => console.log(arguments);
     return (
       <div className="App">
-	<h1> Signup Form </h1>
+	<h1>Signup Form</h1>
+	<FacebookLogin
+	  appId="899337416809733"
+	  autoLoad={true}
+	  fields="name,email,picture"
+	  onClick={componentClicked}
+	  callback={responseFacebook} />
 	<form onSubmit={this.onSubmit.bind(this)}>
 	  <FormGroup controlId="formBasicText">
 	    <ControlLabel>Working example with validation</ControlLabel>

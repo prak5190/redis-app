@@ -1,6 +1,6 @@
 var querystring = require('querystring')
 , ejs = require('ejs')
-, redis = require('./redis');
+, redis = require('./db/redis');
 const geoip = require('node-freegeoip');
 
 module.exports = function(app) {

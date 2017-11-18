@@ -49,8 +49,8 @@ app.use(function(req, res, next) {
   next();
 });
 // restful api routes
-require('./app/routes')(app);
-app.use('/rbuild/',express.static(__dirname + '/public/build'));
+require('./routes')(app);
+app.use('/rbuild/',express.static(__dirname + '/../public/build'));
 
 const js = fs.readdirSync("./public/build/static/js").filter((x) => /main.*\.js$/.test(x))[0];  // Get first js file
 const css = fs.readdirSync("./public/build/static/css").filter((x) => /main.*\.css$/.test(x))[0];

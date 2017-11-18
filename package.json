@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cd public && npm i && npm build  && cd .. && node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cd public && npm i && npm run-script build  && cd .. && node src/index.js",
+    "updateDevel": "cd public && npm run-script build && cd .. && node src/index.js",
+    "devel": "cd public && npm i && cd .. && npm i && nodemon --exec npm run-script updateDevel",
+    "fmt": "./node_modules/prettier/bin/prettier.js --trailing-comma es5 --write {src,__{tests,mocks}__}/**/*.js",
+    "test": "nyc mocha --timeout=3000 ."
   },
   "author": "",
   "license": "ISC",
@@ -27,6 +30,7 @@
     "murmurhash3": "^0.4.0",
     "node-freegeoip": "0.0.1",
     "node-redis": "^0.1.7",
+    "node-thrift": "^1.0.0-dev",
     "passport": "^0.3.2",
     "redis": "^2.7.1",
     "serve-favicon": "^2.4.3",
@@ -35,6 +39,18 @@
   },
   "devDependencies": {
     "chai-as-promised": "^6.0.0",
-    "mocha": "^3.4.2"
+    "jest": "^21.1.0",
+    "mocha": "^3.5.3",
+    "nodemon": "^1.12.1",
+    "prettier": "^1.8.2"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "node_modules/*",
+      "public/node_modules/*",
+      "public/public/*",
+      "public/build/*"
+    ],
+    "delay": "2500"
   }
 }
